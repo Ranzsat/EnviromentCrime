@@ -1,0 +1,57 @@
+﻿@model EFCrimeRepository
+
+<table>
+    <tr>
+        <th>Ärende anmält</th>
+        <th>Ärendenummer</th>
+        <th>Miljöbrott</th>
+        <th>Status</th>
+        <th>Avdelning</th>
+        <th>Handläggare</th>
+    </tr>
+    @if (ViewBag.Role == "Coordinator")
+    {
+        foreach (MyErrand errand in Model.GetAllErrandsCoordinator())
+        {
+            <tr>
+                <td>@errand.DateOfObservation.ToShortDateString()</td>
+                <td><a asp-controller="Coordinator" asp-action="CrimeCoordinator" asp-route-id="@errand.RefNumber">@errand.RefNumber</a></td>
+                <td>@errand.TypeOfCrime</td>
+                <td>@errand.StatusName</td>
+                <td>@errand.DepartmentName</td>
+                <td>@errand.EmployeeName</td>
+            </tr>
+        }
+    }
+    else
+       if (ViewBag.Role == "Investigator")
+    {
+        foreach (MyErrand errand in Model.GetAllErrandsInvestigator(ViewBag.EmployeeId))
+        {
+            <tr>
+                <td>@errand.DateOfObservation.ToShortDateString()</td>
+                <td><a asp-controller="Investigator" asp-action="CrimeInvestigator" asp-route-id="@errand.RefNumber">@errand.RefNumber</a></td>
+                <td>@errand.TypeOfCrime</td>
+                <td>@errand.StatusName</td>
+                <td>@errand.DepartmentName</td>
+                <td>@errand.EmployeeName</td>
+            </tr>
+        }
+    }
+    else
+       if (ViewBag.Role == "Manager")
+    {
+        foreach (MyErrand errand in Model.GetAllErrandsManager(ViewBag.DepartmentId))
+        {
+            <tr>
+                <td>@errand.DateOfObservation.ToShortDateString()</td>
+                <td><a asp-controller="Manager" asp-action="CrimeManager" asp-route-id="@errand.RefNumber">@errand.RefNumber</a></td>
+                <td>@errand.TypeOfCrime</td>
+                <td>@errand.StatusName</td>
+                <td>@errand.DepartmentName</td>
+                <td>@errand.EmployeeName</td>
+            </tr>
+        }
+    }
+
+</table>
